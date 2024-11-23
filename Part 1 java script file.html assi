@@ -1,0 +1,61 @@
+
+
+    console.log("JavaScript is working!");
+
+    // Elements from the DOM
+    const customName = document.getElementById('customname');
+    const randomize = document.querySelector('.randomize');
+    const storyElement = document.querySelector('.story');
+    
+    // Raw story template and insertable options
+    let storyText =
+      "It was 94 fahrenheit outside, so :insertx: went for a walk. When they got to :inserty:, they stared in horror for a few moments, then :insertz:. Bob saw the whole thing, but was not surprised — :insertx: weighs 300 pounds, and it was a hot day.";
+    const insertX = ["Willy the Goblin", "Big Daddy", "Father Christmas"];
+    const insertY = ["the soup kitchen", "Disneyland", "the White House"];
+    const insertZ = [
+      "spontaneously combusted",
+      "melted into a puddle on the sidewalk",
+      "turned into a slug and crawled away",
+    ];
+    
+    // Helper function to pick a random value from an array
+    function randomValueFromArray(array) {
+      const randomIndex = Math.floor(Math.random() * array.length);
+      return array[randomIndex];
+    }
+    
+    // Function to replace placeholders in the story
+    function generateStory() {
+      let newStory = storyText;
+    
+      const xItem = randomValueFromArray(insertX);
+      const yItem = randomValueFromArray(insertY);
+      const zItem = randomValueFromArray(insertZ);
+    
+      // Replace placeholders
+      newStory = newStory.replaceAll(":insertx:", xItem);
+      newStory = newStory.replace(":inserty:", yItem);
+      newStory = newStory.replace(":insertz:", zItem);
+    
+      // Handle custom name input
+      if (customName.value !== "") {
+        const name = customName.value;
+        newStory = newStory.replace("Bob", name);
+      }
+    
+      // Adjust for US/UK selection
+      const isUK = document.getElementById("uk").checked;
+      if (isUK) {
+        newStory = newStory.replace("94 fahrenheit", "34 centigrade");
+        newStory = newStory.replace("300 pounds", "21 stone");
+      }
+    
+      return newStory;
+    }
+    
+    // Event listener for generating a story
+    randomize.addEventListener("click", () => {
+      const finalStory = generateStory();
+      storyElement.textContent = finalStory;
+      storyElement.style.visibility = "visible";
+    });
